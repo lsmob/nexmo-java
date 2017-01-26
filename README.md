@@ -99,10 +99,17 @@ System.out.println("This cost: " + info.getPrice() + " EUR");
             * [ ] Sending Alerts
             * [ ] Campaign Subscription Management
 * Voice
-    * [x] Outbound Calls
-    * [ ] Inbound Call
-    * [ ] Text-To-Speech Call
-    * [ ] Text-To-Speech Prompt
+    * [x] Create call
+    * [x] List calls
+    * [x] Get call info
+    * [x] Modify existing call
+    * [ ] Stream audio to an existing call
+    * [ ] Stop streaming audio to an existing call
+    * [ ] Send speech to an existing call
+    * [ ] Stop speech in an existing call
+    * [ ] Send DTMF to an existing call
+    * [ ] eventUrl webhook support
+    * [x] answerUrl webhook support
 
 
 ## License
