@@ -1,5 +1,5 @@
-package com.nexmo.client.auth;/*
- * Copyright (c) 2011-2016 Nexmo Inc
+/*
+ * Copyright (c) 2011-2017 Nexmo Inc
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,21 +20,15 @@ package com.nexmo.client.auth;/*
  * THE SOFTWARE.
  */
 
+package com.nexmo.client.account.endpoints;
 
-import org.apache.http.client.methods.HttpUriRequest;
+import com.nexmo.client.HttpWrapper;
 
-public class TokenAuthMethod extends AbstractAuthMethod {
-    public final int SORT_KEY = 20;
+public class GetBalanceEndpoint {
+    private GetBalanceMethod getBalanceMethod;
 
-    @Override
-    public HttpUriRequest apply(HttpUriRequest request) {
-        // FIXME: This is a stub.
-        request
-        return request;
+    public GetBalanceEndpoint(HttpWrapper httpWrapper) {
+        this.getBalanceMethod = new GetBalanceMethod(httpWrapper);
     }
 
-    @Override
-    public int getSortKey() {
-        return SORT_KEY;
-    }
 }
