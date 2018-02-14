@@ -19,12 +19,32 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.nexmo.client.voice;
+package com.nexmo.client.legacyutils;
 
-public class PageLink {
-    private String href;
+public class PageLinks {
+    private PageLink self;
+    private PageLink next;
+    private PageLink prev;
+    private PageLink first;
+    private PageLink last;
 
-    public String getHref() {
-        return href;
+    public PageLink getSelf() {
+        return self;
+    }
+
+    public PageLink getNext() {
+        return next;
+    }
+
+    public PageLink getPrev() {
+        return prev;
+    }
+
+    public PageLink getFirst() {
+        return first;
+    }
+
+    public PageLink getLast() {
+        return last;
     }
 }

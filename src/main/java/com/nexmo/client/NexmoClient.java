@@ -27,6 +27,7 @@ import com.nexmo.client.applications.ApplicationClient;
 import com.nexmo.client.auth.AuthMethod;
 import com.nexmo.client.auth.JWTAuthMethod;
 import com.nexmo.client.auth.NexmoUnacceptableAuthException;
+import com.nexmo.client.stitch.InAppMessagingClient;
 import com.nexmo.client.insight.InsightClient;
 import com.nexmo.client.numbers.NumbersClient;
 import com.nexmo.client.sms.SmsClient;
@@ -39,9 +40,11 @@ import org.apache.http.client.HttpClient;
  * Top-level Nexmo API client object.
  * <p>
  * Construct an instance of this object with one or more {@link AuthMethod}s (providing all the authentication methods
- * for the APIs you wish to use), and then call {@link #getVoiceClient()} to obtain a client for the Nexmo Voice API.
+ * for the APIs you wish to use), and then you can call:
+ *      *{@link #getVoiceClient()} to obtain a client for the Nexmo Voice API.
+ *      *{@link #getInAppMessagingClient()} to obtain a client for the Nexmo In-App Messaging API.
  * <p>
- * Currently this object only constructs and provides access to {@link VoiceClient}. In the future it will manage
+ * Currently this object constructs and provides access to {@link VoiceClient} and  {@link InAppMessagingClient}. In the future it will manage
  * clients for all of the Nexmo APIs.
  */
 public class NexmoClient {
@@ -53,12 +56,12 @@ public class NexmoClient {
     private final VoiceClient voice;
     private final VerifyClient verify;
     private final SnsClient sns;
+    private final InAppMessagingClient inAppMessagingClient;
 
     private HttpWrapper httpWrapper;
 
     public NexmoClient(AuthMethod... authMethods) {
         this.httpWrapper = new HttpWrapper(authMethods);
-
         this.account = new AccountClient(this.httpWrapper);
         this.application = new ApplicationClient(this.httpWrapper);
         this.insight = new InsightClient(this.httpWrapper);
@@ -67,6 +70,7 @@ public class NexmoClient {
         this.voice = new VoiceClient(this.httpWrapper);
         this.sms = new SmsClient(this.httpWrapper);
         this.sns = new SnsClient(this.httpWrapper);
+        this.inAppMessagingClient = new InAppMessagingClient(this.httpWrapper);
     }
 
     /**
@@ -110,6 +114,10 @@ public class NexmoClient {
 
     public VoiceClient getVoiceClient() {
         return this.voice;
+    }
+
+    public InAppMessagingClient getInAppMessagingClient() {
+        return this.inAppMessagingClient;
     }
 
     /**
