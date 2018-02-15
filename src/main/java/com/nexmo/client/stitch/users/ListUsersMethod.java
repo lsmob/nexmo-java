@@ -28,7 +28,7 @@ import java.util.List;
 public class ListUsersMethod extends AbstractMethod<InAppUsersFilter, InAppUserInfoPage> {
     private static final Log LOG = LogFactory.getLog(ListUsersMethod.class);
 
-    private static final String DEFAULT_URI = " https://api.nexmo.com/beta/users";
+    private static final String DEFAULT_URI = "https://api.nexmo.com/beta/users";
     private static final Class[] ALLOWED_AUTH_METHODS = new Class[]{JWTAuthMethod.class};
     private String uri = DEFAULT_URI;
 

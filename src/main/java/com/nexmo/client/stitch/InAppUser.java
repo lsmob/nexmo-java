@@ -49,7 +49,7 @@ public class InAppUser {
             ObjectMapper mapper = new ObjectMapper();
             return mapper.readValue(json, InAppUser.class);
         } catch (IOException jpe) {
-            throw new NexmoUnexpectedException("Failed to produce json from InAppUser object.", jpe);
+            throw new NexmoUnexpectedException("Failed to produce InAppUser object from json.", jpe);
         }
     }
 }

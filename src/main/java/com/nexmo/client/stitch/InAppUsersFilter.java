@@ -14,6 +14,9 @@ import java.util.List;
 public class InAppUsersFilter {
     /* The user names*/
     private String name;
+    private Integer pageSize;
+    private Integer recordIndex;
+    private String order;
 
     public String getName() {
         return name;
@@ -23,9 +26,36 @@ public class InAppUsersFilter {
         this.name = name;
     }
 
+    public Integer getPageSize() {
+        return pageSize;
+    }
+
+    public void setPageSize(Integer pageSize) {
+        this.pageSize = pageSize;
+    }
+
+    public Integer getRecordIndex() {
+        return recordIndex;
+    }
+
+    public void setRecordIndex(Integer recordIndex) {
+        this.recordIndex = recordIndex;
+    }
+
+    public String getOrder() {
+        return order;
+    }
+
+    public void setOrder(String order) {
+        this.order = order;
+    }
+
     public List<NameValuePair> toUrlParams() {
         List<NameValuePair> result = new ArrayList<NameValuePair>(10);
         conditionalAdd(result, "name", this.name);
+        conditionalAdd(result, "page_size", this.pageSize);
+        conditionalAdd(result, "record_index", this.recordIndex);
+        conditionalAdd(result, "order", this.order);
 
         return result;
     }
@@ -36,4 +66,9 @@ public class InAppUsersFilter {
         }
     }
 
+    private void conditionalAdd(List<NameValuePair> params, String name, Object value) {
+        if (value != null) {
+            params.add(new BasicNameValuePair(name, value.toString()));
+        }
+    }
 }

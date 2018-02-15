@@ -20,7 +20,7 @@ public class InAppUserInfo {
     /* The href of the user */
     private String href;
     /* The user channels */
-    private String channels;
+    private ChannelData channels;
 
     public String toString() {
         return new StringBuilder()
@@ -38,7 +38,7 @@ public class InAppUserInfo {
             ObjectMapper mapper = new ObjectMapper();
             return mapper.readValue(json, InAppUserInfo.class);
         } catch (IOException jpe) {
-            throw new NexmoUnexpectedException("Failed to produce json from InAppUser object.", jpe);
+            throw new NexmoUnexpectedException("Failed to produce InAppUserInfo object from json.", jpe);
         }
     }
 
@@ -68,11 +68,11 @@ public class InAppUserInfo {
     }
 
     @JsonProperty("channels")
-    public String getChannels() {
+    public ChannelData getChannels() {
         return channels;
     }
 
-    public void setChannels(String channels) {
+    public void setChannels(ChannelData channels) {
         this.channels = channels;
     }
 }

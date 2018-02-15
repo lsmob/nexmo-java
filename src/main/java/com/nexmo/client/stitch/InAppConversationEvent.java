@@ -19,7 +19,7 @@ public class InAppConversationEvent {
             ObjectMapper mapper = new ObjectMapper();
             return mapper.readValue(json, InAppConversationEvent.class);
         } catch (IOException jpe) {
-            throw new NexmoUnexpectedException("Failed to produce json from InAppConversation object.", jpe);
+            throw new NexmoUnexpectedException("Failed to produce InAppConversationEvent object from json.", jpe);
         }
     }
 

@@ -19,7 +19,7 @@ public class InAppUserEvent {
             ObjectMapper mapper = new ObjectMapper();
             return mapper.readValue(json, InAppUserEvent.class);
         } catch (IOException jpe) {
-            throw new NexmoUnexpectedException("Failed to produce json from InAppUser object.", jpe);
+            throw new NexmoUnexpectedException("Failed to produce InAppUserEvent object from json.", jpe);
         }
     }
 

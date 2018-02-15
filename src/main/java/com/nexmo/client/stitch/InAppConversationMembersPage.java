@@ -12,17 +12,27 @@ import java.io.IOException;
 import java.util.Iterator;
 
 /**
- * Created by Ergyun Syuleyman on 2/13/18.
+ * Created by Ergyun Syuleyman on 2/15/18.
  */
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class InAppUserInfoPage implements Iterable<InAppUserInfo> {
+public class InAppConversationMembersPage implements Iterable<InAppConversationMember> {
+    private String conversationId;
+
     private int count;
     private int pageSize;
     private int recordIndex;
 
     private PageLinks links;
-    private EmbeddedInAppUsers embedded;
+    private EmbeddedInAppConversationMembers embedded;
+
+    public String getConversationId() {
+        return conversationId;
+    }
+
+    public void setConversationId(String conversationId) {
+        this.conversationId = conversationId;
+    }
 
     public int getCount() {
         return count;
@@ -44,22 +54,22 @@ public class InAppUserInfoPage implements Iterable<InAppUserInfo> {
     }
 
     @JsonProperty("_embedded")
-    public EmbeddedInAppUsers getEmbedded() {
+    public EmbeddedInAppConversationMembers getEmbedded() {
         return embedded;
     }
 
     @Override
-    public Iterator<InAppUserInfo> iterator() {
-        return new ArrayIterator<>(embedded.getInAppUserInfos());
+    public Iterator<InAppConversationMember> iterator() {
+        return new ArrayIterator<>(embedded.getInAppConversationMembers());
     }
 
-    public static InAppUserInfoPage fromJson(String json) {
+    public static InAppConversationMembersPage fromJson(String json) {
         try {
             ObjectMapper mapper = new ObjectMapper();
             mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-            return mapper.readValue(json, InAppUserInfoPage.class);
+            return mapper.readValue(json, InAppConversationMembersPage.class);
         } catch (IOException jpe) {
-            throw new NexmoUnexpectedException("Failed to produce InAppUserInfoPage object from json.", jpe);
+            throw new NexmoUnexpectedException("Failed to produce InAppConversationMembersPage object from json.", jpe);
         }
     }
 }

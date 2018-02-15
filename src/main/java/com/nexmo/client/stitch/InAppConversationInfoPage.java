@@ -59,7 +59,7 @@ public class InAppConversationInfoPage implements Iterable<InAppConversationInfo
             mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
             return mapper.readValue(json, InAppConversationInfoPage.class);
         } catch (IOException jpe) {
-            throw new NexmoUnexpectedException("Failed to produce json from InAppConversation object.", jpe);
+            throw new NexmoUnexpectedException("Failed to produce InAppConversationInfoPage object from json.", jpe);
         }
     }
 }

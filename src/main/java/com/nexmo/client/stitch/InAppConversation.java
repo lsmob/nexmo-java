@@ -65,7 +65,7 @@ public class InAppConversation {
             ObjectMapper mapper = new ObjectMapper();
             return mapper.readValue(json, InAppUser.class);
         } catch (IOException jpe) {
-            throw new NexmoUnexpectedException("Failed to produce json from InAppConversation object.", jpe);
+            throw new NexmoUnexpectedException("Failed to produce InAppConversation object from json.", jpe);
         }
     }
 

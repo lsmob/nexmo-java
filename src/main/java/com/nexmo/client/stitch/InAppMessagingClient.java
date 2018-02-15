@@ -5,6 +5,7 @@ import com.nexmo.client.HttpWrapper;
 import com.nexmo.client.NexmoClient;
 import com.nexmo.client.NexmoClientException;
 import com.nexmo.client.stitch.conversations.InAppConversations;
+import com.nexmo.client.stitch.members.InAppConversationMembers;
 import com.nexmo.client.stitch.users.InAppUsers;
 
 import java.io.IOException;
@@ -21,12 +22,14 @@ public class InAppMessagingClient extends AbstractClient {
 
     protected final InAppConversations conversations;
     protected final InAppUsers users;
+    protected final InAppConversationMembers members;
 
     public InAppMessagingClient(HttpWrapper httpWrapper) {
         super(httpWrapper);
 
         conversations = new InAppConversations(httpWrapper);
         users = new InAppUsers(httpWrapper);
+        members = new InAppConversationMembers(httpWrapper);
     }
 
     /**
@@ -36,7 +39,7 @@ public class InAppMessagingClient extends AbstractClient {
      *               containing the <tt>display-name</tt> of your choosing to create a conversation.
      *               Also can contains the <tt>name</tt> optional conversation name, must be unique but will auto-generated if you do not provide it.
      * @return An InAppConversationEvent describing the initial state of the conversation, containing the <tt>uuid</tt> required to
-     * interact with the In-App Messsaging conversation.
+     *         interact with the In-App Messsaging conversation.
      * @throws IOException          if a network error occurred contacting the Nexmo In-App Messaging API.
      * @throws NexmoClientException if there was a problem with the Nexmo request or response objects.
      */
@@ -76,7 +79,7 @@ public class InAppMessagingClient extends AbstractClient {
      *             {@link #createConversation(InAppConversation)}.
      *             This value can be obtained with {@link InAppConversationEvent#getId()}
      * @return An InAppConversationInfo object, representing the response from the Nexmo In-App Messaging API.
-     * @throws IOException          if a network error occurred contacting the Nexmo Voice API.
+     * @throws IOException          if a network error occurred contacting the Nexmo In-App Messaging API.
      * @throws NexmoClientException if there was a problem with the Nexmo request or response objects.
      */
     public InAppConversationInfo getConversationDetails(String uuid) throws IOException, NexmoClientException {
@@ -90,7 +93,7 @@ public class InAppMessagingClient extends AbstractClient {
      * @param request Describing the initial state of the user to be made,
      *               containing the <tt>name</tt> of your choosing to create an user.
      * @return An InAppUserEvent describing the initial state of the user, containing the <tt>uuid</tt> required to
-     * interact with the In-App Messsaging user.
+     *         interact with the In-App Messsaging user.
      * @throws IOException          if a network error occurred contacting the Nexmo In-App Messaging API.
      * @throws NexmoClientException if there was a problem with the Nexmo request or response objects.
      */
@@ -130,11 +133,38 @@ public class InAppMessagingClient extends AbstractClient {
      *             {@link #createUser(InAppUser)}.
      *             This value can be obtained with {@link InAppUserEvent#getId()}
      * @return An InAppUserInfo object, representing the response from the Nexmo In-App Messaging API.
-     * @throws IOException          if a network error occurred contacting the Nexmo Voice API.
+     * @throws IOException          if a network error occurred contacting the Nexmo In-App Messaging API.
      * @throws NexmoClientException if there was a problem with the Nexmo request or response objects.
      */
     public InAppUserInfo getUserDetails(String uuid) throws IOException, NexmoClientException {
         return users.get(uuid);
+    }
+
+
+    /**
+     * Obtain the first page of InAppConversationMember objects matching the query by <tt>conversatioId</tt>, representing the most
+     * recent conversation members.
+     *
+     * @param conversationId (mandatory) A conversationId describing which conversation members to be listed.
+     * @return An InAppConversationMembersPage representing the response from the Nexmo In-App Messaging API.
+     * @throws IOException          if a network error occurred contacting the Nexmo In-App Messaging API.
+     * @throws NexmoClientException if there was a problem with the Nexmo request or response objects.
+     */
+    public InAppConversationMembersPage listConversationMembers(String conversationId) throws IOException, NexmoClientException {
+        return members.getMembers(conversationId);
+    }
+
+    /**
+     * Add a user to conversation.
+     *
+     * @param request Describing the user and conversation ID to be added.
+     * @return An InAppConversationMemberEvent describing the conversation member, containing the
+     *         information required to interact with the In-App Messsaging conversation.
+     * @throws IOException          if a network error occurred contacting the Nexmo In-App Messaging API.
+     * @throws NexmoClientException if there was a problem with the Nexmo request or response objects.
+     */
+    public InAppConversationMemberEvent addConversationMember(InAppConversationMemberRequest request) throws IOException, NexmoClientException {
+        return members.addMember(request);
     }
 
 }

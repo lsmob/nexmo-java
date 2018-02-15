@@ -3,11 +3,11 @@ package com.nexmo.client.stitch.conversations;
 import com.nexmo.client.HttpWrapper;
 import com.nexmo.client.NexmoClientException;
 import com.nexmo.client.stitch.InAppConversation;
-import com.nexmo.client.stitch.InAppConversationsFilter;
-import com.nexmo.client.stitch.InAppMessagingClient;
 import com.nexmo.client.stitch.InAppConversationEvent;
 import com.nexmo.client.stitch.InAppConversationInfo;
 import com.nexmo.client.stitch.InAppConversationInfoPage;
+import com.nexmo.client.stitch.InAppConversationsFilter;
+import com.nexmo.client.stitch.InAppMessagingClient;
 
 import java.io.IOException;
 
@@ -49,6 +49,8 @@ public class InAppConversations {
 
     /**
      * List conversations which match the provided <tt>filter</tt>.
+     * <p>
+     * Requires a {@link com.nexmo.client.auth.JWTAuthMethod} to be provided to the NexmoClient which constructs
      *
      * @param filter An InAppConversationsFilter describing the conversations to be searched, or {@code null} for all conversations.
      * @return An InAppConversationInfoPage containing a single page of {@link InAppConversationInfo} results
@@ -61,6 +63,8 @@ public class InAppConversations {
 
     /**
      * Get details of a single conversation, identified by <tt>uuid</tt>.
+     * <p>
+     * Requires a {@link com.nexmo.client.auth.JWTAuthMethod} to be provided to the NexmoClient which constructs
      *
      * @param uuid The uuid of the InAppConversationInfo object to be retrieved
      * @return An InAppConversationInfo object describing the state of the conversation that was made or is in progress

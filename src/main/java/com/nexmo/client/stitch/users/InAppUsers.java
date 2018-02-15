@@ -42,6 +42,8 @@ public class InAppUsers {
 
         /**
          * List users which match the provided <tt>filter</tt>.
+         * <p>
+         * Requires a {@link com.nexmo.client.auth.JWTAuthMethod} to be provided to the NexmoClient which constructs
          *
          * @param filter An InAppUsersFilter describing the users to be searched, or {@code null} for all users.
          * @return An InAppUserInfoPage containing a single page of {@link InAppUserInfo} results
@@ -54,6 +56,8 @@ public class InAppUsers {
 
         /**
          * Get details of a single user, identified by <tt>uuid</tt>.
+         * <p>
+         * Requires a {@link com.nexmo.client.auth.JWTAuthMethod} to be provided to the NexmoClient which constructs
          *
          * @param uuid The uuid of the InAppUserInfo object to be retrieved
          * @return An InAppUserInfo object describing the state of the user that was made or is in progress
