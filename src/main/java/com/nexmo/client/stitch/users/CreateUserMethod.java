@@ -10,6 +10,8 @@ import com.nexmo.client.voice.endpoints.AbstractMethod;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.http.HttpResponse;
+import org.apache.http.StatusLine;
+import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.methods.RequestBuilder;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.BasicResponseHandler;
@@ -50,8 +52,18 @@ public class CreateUserMethod extends AbstractMethod<InAppUser, InAppUserEvent> 
 
     @Override
     public InAppUserEvent parseResponse(HttpResponse response) throws IOException {
-        String json = new BasicResponseHandler().handleResponse(response);
-        return InAppUserEvent.fromJson(json);
+        String json;
+        final StatusLine statusLine = response.getStatusLine();
+        try {
+            json = new BasicResponseHandler().handleResponse(response);
+        } catch (HttpResponseException e) {
+            json = "{}";
+            LOG.error("Application User create response: " + response.toString(), e);
+        }
+        InAppUserEvent userEvent = InAppUserEvent.fromJson(json);
+        userEvent.setStatusCode(statusLine.getStatusCode());
+        userEvent.setReasonPhrase(statusLine.getReasonPhrase());
+        return userEvent;
     }
 
     public void setUri(String uri) {

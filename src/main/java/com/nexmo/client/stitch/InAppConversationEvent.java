@@ -1,5 +1,7 @@
 package com.nexmo.client.stitch;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nexmo.client.NexmoUnexpectedException;
 
@@ -9,10 +11,14 @@ import java.io.IOException;
  * Created by Ergyun Syuleyman on 2/14/18.
  */
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class InAppConversationEvent {
     /* Unique identifier for the conversation */
     private String id;
     private String href;
+
+    private int statusCode;
+    private String reasonPhrase;
 
     public static InAppConversationEvent fromJson(String json) {
         try {
@@ -39,4 +45,21 @@ public class InAppConversationEvent {
         this.href = href;
     }
 
+    @JsonIgnore
+    public int getStatusCode() {
+        return statusCode;
+    }
+
+    public void setStatusCode(int statusCode) {
+        this.statusCode = statusCode;
+    }
+
+    @JsonIgnore
+    public String getReasonPhrase() {
+        return reasonPhrase;
+    }
+
+    public void setReasonPhrase(String reasonPhrase) {
+        this.reasonPhrase = reasonPhrase;
+    }
 }

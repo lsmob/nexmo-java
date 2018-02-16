@@ -8,6 +8,8 @@ import com.nexmo.client.voice.endpoints.AbstractMethod;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.http.HttpResponse;
+import org.apache.http.StatusLine;
+import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.methods.RequestBuilder;
 import org.apache.http.impl.client.BasicResponseHandler;
 
@@ -41,8 +43,18 @@ public class ReadUserMethod extends AbstractMethod<String, InAppUserInfo> {
 
     @Override
     public InAppUserInfo parseResponse(HttpResponse response) throws IOException {
-        String json = new BasicResponseHandler().handleResponse(response);
-        return InAppUserInfo.fromJson(json);
+        String json;
+        final StatusLine statusLine = response.getStatusLine();
+        try {
+            json = new BasicResponseHandler().handleResponse(response);
+        } catch (HttpResponseException e) {
+            json = "{}";
+            LOG.error("Application User details response: " + response.toString(), e);
+        }
+        InAppUserInfo userInfo = InAppUserInfo.fromJson(json);
+        userInfo.setStatusCode(statusLine.getStatusCode());
+        userInfo.setReasonPhrase(statusLine.getReasonPhrase());
+        return userInfo;
     }
 
     public void setBaseUri(String baseUri) {

@@ -12,7 +12,7 @@ public class EmbeddedInAppUsers {
     private InAppUserInfo[] userInfos;
 
     @JsonProperty("users")
-    private void setInAppUserInfos(InAppUserInfo[] userInfos) {
+    public void setInAppUserInfos(InAppUserInfo[] userInfos) {
         this.userInfos = userInfos;
     }
 

@@ -46,6 +46,7 @@ public class InAppConversation {
         return displayName;
     }
 
+    @JsonProperty("display_name")
     public void setDisplayName(String displayName) {
         this.displayName = displayName;
     }

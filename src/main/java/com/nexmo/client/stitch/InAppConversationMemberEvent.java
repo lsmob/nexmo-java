@@ -1,5 +1,6 @@
 package com.nexmo.client.stitch;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -26,6 +27,9 @@ public class InAppConversationMemberEvent {
     /* The href of the conversation member */
     private String href;
 
+    private int statusCode;
+    private String reasonPhrase;
+
     public String toString() {
         return new StringBuilder()
                 .append("<InAppConversationMemberEvent ")
@@ -34,7 +38,7 @@ public class InAppConversationMemberEvent {
                 .append("User-ID: ").append(this.getUserId()).append(", ")
                 .append("State: ").append(this.getState()).append(", ")
                 .append("Channel: ").append(this.getChannel()).append(", ")
-                .append("href: ").append(this.getHRef())
+                .append("href: ").append(this.getHref())
                 .append(">")
                 .toString();
     }
@@ -48,6 +52,7 @@ public class InAppConversationMemberEvent {
         }
     }
 
+    @JsonIgnore
     public String getConversationId() {
         return conversationId;
     }
@@ -56,7 +61,6 @@ public class InAppConversationMemberEvent {
         this.conversationId = conversationId;
     }
 
-    @JsonProperty("id")
     public String getId() {
         return id;
     }
@@ -70,20 +74,19 @@ public class InAppConversationMemberEvent {
         return userId;
     }
 
+    @JsonProperty("user_id")
     public void setUserId(String userId) {
         this.userId = userId;
     }
 
-    @JsonProperty("state")
     public InAppConversationMemberState getState() {
         return state;
     }
 
-    public void setChannel(InAppConversationMemberState state) {
+    public void setState(InAppConversationMemberState state) {
         this.state = state;
     }
 
-    @JsonProperty("channel")
     public ChannelData getChannel() {
         return channel;
     }
@@ -92,12 +95,30 @@ public class InAppConversationMemberEvent {
         this.channel = channel;
     }
 
-    @JsonProperty("href")
-    public String getHRef() {
+    public String getHref() {
         return href;
     }
 
-    public void setHRef(String href) {
+    public void setHref(String href) {
         this.href = href;
+    }
+
+
+    @JsonIgnore
+    public int getStatusCode() {
+        return statusCode;
+    }
+
+    public void setStatusCode(int statusCode) {
+        this.statusCode = statusCode;
+    }
+
+    @JsonIgnore
+    public String getReasonPhrase() {
+        return reasonPhrase;
+    }
+
+    public void setReasonPhrase(String reasonPhrase) {
+        this.reasonPhrase = reasonPhrase;
     }
 }

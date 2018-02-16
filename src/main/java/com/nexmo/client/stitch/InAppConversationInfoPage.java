@@ -1,5 +1,6 @@
 package com.nexmo.client.stitch;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -24,6 +25,9 @@ public class InAppConversationInfoPage implements Iterable<InAppConversationInfo
     private PageLinks links;
     private EmbeddedInAppConversations embedded;
 
+    private int statusCode;
+    private String reasonPhrase;
+
     public int getCount() {
         return count;
     }
@@ -47,6 +51,25 @@ public class InAppConversationInfoPage implements Iterable<InAppConversationInfo
     public EmbeddedInAppConversations getEmbedded() {
         return embedded;
     }
+
+    @JsonIgnore
+    public int getStatusCode() {
+        return statusCode;
+    }
+
+    public void setStatusCode(int statusCode) {
+        this.statusCode = statusCode;
+    }
+
+    @JsonIgnore
+    public String getReasonPhrase() {
+        return reasonPhrase;
+    }
+
+    public void setReasonPhrase(String reasonPhrase) {
+        this.reasonPhrase = reasonPhrase;
+    }
+
 
     @Override
     public Iterator<InAppConversationInfo> iterator() {

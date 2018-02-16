@@ -4,14 +4,17 @@ import com.nexmo.client.HttpWrapper;
 import com.nexmo.client.NexmoClientException;
 import com.nexmo.client.NexmoUnexpectedException;
 import com.nexmo.client.auth.JWTAuthMethod;
-import com.nexmo.client.stitch.InAppConversationsFilter;
+import com.nexmo.client.stitch.Constants;
 import com.nexmo.client.stitch.InAppConversationInfoPage;
+import com.nexmo.client.stitch.InAppConversationsFilter;
 import com.nexmo.client.voice.endpoints.AbstractMethod;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
+import org.apache.http.StatusLine;
+import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.methods.RequestBuilder;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.impl.client.BasicResponseHandler;
@@ -60,8 +63,27 @@ public class ListConversationsMethod extends AbstractMethod<InAppConversationsFi
 
     @Override
     public InAppConversationInfoPage parseResponse(HttpResponse response) throws IOException {
-        String json = new BasicResponseHandler().handleResponse(response);
-        return InAppConversationInfoPage.fromJson(json);
+        String json;
+        InAppConversationInfoPage conversationInfoPage;
+        final StatusLine statusLine = response.getStatusLine();
+        try {
+            json = new BasicResponseHandler().handleResponse(response);
+        } catch (HttpResponseException e) {
+            json = "{}";
+            LOG.error("Application Conversation create response: " + response.toString(), e);
+        }
+
+        LOG.debug("Application Conversations JSON: " + json );
+
+        if (Constants.enableConversationsListPagination) {
+            conversationInfoPage = InAppConversationInfoPage.fromJson(json);
+        } else {
+            LOG.warn("Application Conversations List implemented with pagination support only.");
+            conversationInfoPage = new InAppConversationInfoPage();
+        }
+        conversationInfoPage.setStatusCode(statusLine.getStatusCode());
+        conversationInfoPage.setReasonPhrase(statusLine.getReasonPhrase());
+        return conversationInfoPage;
     }
 
     public void setUri(String uri) {

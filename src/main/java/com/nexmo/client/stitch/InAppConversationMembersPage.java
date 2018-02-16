@@ -1,5 +1,6 @@
 package com.nexmo.client.stitch;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -26,6 +27,10 @@ public class InAppConversationMembersPage implements Iterable<InAppConversationM
     private PageLinks links;
     private EmbeddedInAppConversationMembers embedded;
 
+    private int statusCode;
+    private String reasonPhrase;
+
+    @JsonIgnore
     public String getConversationId() {
         return conversationId;
     }
@@ -58,9 +63,38 @@ public class InAppConversationMembersPage implements Iterable<InAppConversationM
         return embedded;
     }
 
+    @JsonIgnore
+    public int getStatusCode() {
+        return statusCode;
+    }
+
+    public void setStatusCode(int statusCode) {
+        this.statusCode = statusCode;
+    }
+
+    @JsonIgnore
+    public String getReasonPhrase() {
+        return reasonPhrase;
+    }
+
+    public void setReasonPhrase(String reasonPhrase) {
+        this.reasonPhrase = reasonPhrase;
+    }
+
+
     @Override
     public Iterator<InAppConversationMember> iterator() {
         return new ArrayIterator<>(embedded.getInAppConversationMembers());
+    }
+
+    @JsonIgnore
+    public void setEmbedded(EmbeddedInAppConversationMembers embeddedInAppConversationMembers) {
+        if (!Constants.enableUsersListPagination) {
+            this.embedded = embeddedInAppConversationMembers;
+            this.count = embeddedInAppConversationMembers.getInAppConversationMembers().length;
+            this.pageSize = embeddedInAppConversationMembers.getInAppConversationMembers().length;
+            this.recordIndex = 0;
+        }
     }
 
     public static InAppConversationMembersPage fromJson(String json) {

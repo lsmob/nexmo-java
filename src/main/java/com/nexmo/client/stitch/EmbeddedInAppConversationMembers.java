@@ -12,7 +12,7 @@ public class EmbeddedInAppConversationMembers {
     private InAppConversationMember[] conversationMembers;
 
     @JsonProperty("members")
-    private void setInAppConversationMembers(InAppConversationMember[] conversationMembers) {
+    public void setInAppConversationMembers(InAppConversationMember[] conversationMembers) {
         this.conversationMembers = conversationMembers;
     }
 

@@ -1,5 +1,6 @@
 package com.nexmo.client.stitch;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -21,6 +22,9 @@ public class InAppUserInfo {
     private String href;
     /* The user channels */
     private ChannelData channels;
+
+    private int statusCode;
+    private String reasonPhrase;
 
     public String toString() {
         return new StringBuilder()
@@ -74,5 +78,24 @@ public class InAppUserInfo {
 
     public void setChannels(ChannelData channels) {
         this.channels = channels;
+    }
+
+
+    @JsonIgnore
+    public int getStatusCode() {
+        return statusCode;
+    }
+
+    public void setStatusCode(int statusCode) {
+        this.statusCode = statusCode;
+    }
+
+    @JsonIgnore
+    public String getReasonPhrase() {
+        return reasonPhrase;
+    }
+
+    public void setReasonPhrase(String reasonPhrase) {
+        this.reasonPhrase = reasonPhrase;
     }
 }

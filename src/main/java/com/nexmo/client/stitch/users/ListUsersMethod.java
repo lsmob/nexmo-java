@@ -1,17 +1,24 @@
 package com.nexmo.client.stitch.users;
 
+import com.auth0.jwt.internal.com.fasterxml.jackson.databind.ObjectMapper;
+import com.auth0.jwt.internal.com.fasterxml.jackson.databind.SerializationFeature;
 import com.nexmo.client.HttpWrapper;
 import com.nexmo.client.NexmoClientException;
 import com.nexmo.client.NexmoUnexpectedException;
 import com.nexmo.client.auth.JWTAuthMethod;
-import com.nexmo.client.stitch.InAppUsersFilter;
+import com.nexmo.client.stitch.Constants;
+import com.nexmo.client.stitch.EmbeddedInAppUsers;
+import com.nexmo.client.stitch.InAppUserInfo;
 import com.nexmo.client.stitch.InAppUserInfoPage;
+import com.nexmo.client.stitch.InAppUsersFilter;
 import com.nexmo.client.voice.endpoints.AbstractMethod;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
+import org.apache.http.StatusLine;
+import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.methods.RequestBuilder;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.impl.client.BasicResponseHandler;
@@ -60,9 +67,33 @@ public class ListUsersMethod extends AbstractMethod<InAppUsersFilter, InAppUserI
 
     @Override
     public InAppUserInfoPage parseResponse(HttpResponse response) throws IOException {
-        String json = new BasicResponseHandler().handleResponse(response);
-        return InAppUserInfoPage.fromJson(json);
+        String json;
+        InAppUserInfoPage userInfoPage;
+        final StatusLine statusLine = response.getStatusLine();
+        try {
+            json = new BasicResponseHandler().handleResponse(response);
+        } catch (HttpResponseException e) {
+            json = "{}";
+            LOG.error("Application Users response: " + response.toString(), e);
+        }
+
+        LOG.debug("Application Users JSON: " + json );
+
+        if (Constants.enableUsersListPagination) {
+            userInfoPage = InAppUserInfoPage.fromJson(json);
+        } else {
+            EmbeddedInAppUsers embeddedInAppUsers = new EmbeddedInAppUsers();
+            ObjectMapper mapper = new ObjectMapper();
+            mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+            embeddedInAppUsers.setInAppUserInfos(mapper.readValue(json, InAppUserInfo[].class));
+            userInfoPage = new InAppUserInfoPage();
+            userInfoPage.setEmbedded(embeddedInAppUsers);
+        }
+        userInfoPage.setStatusCode(statusLine.getStatusCode());
+        userInfoPage.setReasonPhrase(statusLine.getReasonPhrase());
+        return userInfoPage;
     }
+
 
     public void setUri(String uri) {
         this.uri = uri;

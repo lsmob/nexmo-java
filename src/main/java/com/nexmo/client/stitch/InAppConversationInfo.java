@@ -1,5 +1,6 @@
 package com.nexmo.client.stitch;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -24,6 +25,9 @@ public class InAppConversationInfo {
     private String properties;
     /* The API Key of the owner of the conversation */
     private String apiKey;
+
+    private int statusCode;
+    private String reasonPhrase;
 
     public String toString() {
         return new StringBuilder()
@@ -105,5 +109,24 @@ public class InAppConversationInfo {
 
     public void setApiKey(String apiKey) {
         this.apiKey = apiKey;
+    }
+
+
+    @JsonIgnore
+    public int getStatusCode() {
+        return statusCode;
+    }
+
+    public void setStatusCode(int statusCode) {
+        this.statusCode = statusCode;
+    }
+
+    @JsonIgnore
+    public String getReasonPhrase() {
+        return reasonPhrase;
+    }
+
+    public void setReasonPhrase(String reasonPhrase) {
+        this.reasonPhrase = reasonPhrase;
     }
 }

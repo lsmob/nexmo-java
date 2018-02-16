@@ -1,5 +1,6 @@
 package com.nexmo.client.stitch;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nexmo.client.NexmoUnexpectedException;
 
@@ -13,6 +14,9 @@ public class InAppUserEvent {
     /* Unique identifier for the user */
     private String id;
     private String href;
+
+    private int statusCode;
+    private String reasonPhrase;
 
     public static InAppUserEvent fromJson(String json) {
         try {
@@ -40,4 +44,22 @@ public class InAppUserEvent {
         this.href = href;
     }
 
+
+    @JsonIgnore
+    public int getStatusCode() {
+        return statusCode;
+    }
+
+    public void setStatusCode(int statusCode) {
+        this.statusCode = statusCode;
+    }
+
+    @JsonIgnore
+    public String getReasonPhrase() {
+        return reasonPhrase;
+    }
+
+    public void setReasonPhrase(String reasonPhrase) {
+        this.reasonPhrase = reasonPhrase;
+    }
 }

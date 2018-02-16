@@ -5,7 +5,6 @@ import com.nexmo.client.NexmoClientException;
 import com.nexmo.client.NexmoMethodFailedException;
 import com.nexmo.client.NexmoUnexpectedException;
 import com.nexmo.client.auth.JWTAuthMethod;
-import com.nexmo.client.stitch.InAppConversationEvent;
 import com.nexmo.client.stitch.InAppConversationMemberEvent;
 import com.nexmo.client.stitch.InAppConversationMemberRequest;
 import com.nexmo.client.voice.endpoints.AbstractMethod;
@@ -13,6 +12,8 @@ import com.nexmo.client.voice.endpoints.AbstractMethod;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.http.HttpResponse;
+import org.apache.http.StatusLine;
+import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.methods.RequestBuilder;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.entity.StringEntity;
@@ -42,16 +43,20 @@ public class AddConversationMemberMethod extends AbstractMethod<InAppConversatio
     public RequestBuilder makeRequest(InAppConversationMemberRequest request) throws NexmoClientException, UnsupportedEncodingException {
         this.conversationId = request.getConversationId();
         URIBuilder uriBuilder;
-        try {
-            uriBuilder = new URIBuilder(this.uri);
-        } catch (URISyntaxException e) {
-            throw new NexmoUnexpectedException("Could not parse URI: " + this.uri);
-        }
+        String finalUri = uri;
         if (conversationId != null) {
-            uriBuilder.setParameter("id", conversationId);
+            finalUri = finalUri.replace(":id", conversationId);
         } else {
             throw new NexmoMethodFailedException("Not allowed request. Conversation ID is required!");
         }
+        try {
+            uriBuilder = new URIBuilder(finalUri);
+        } catch (URISyntaxException e) {
+            throw new NexmoUnexpectedException("Could not parse URI: " + this.uri);
+        }
+
+        LOG.debug("Application Conversation Members URL: " + uriBuilder.toString());
+
         if (request != null) {
             return RequestBuilder.post()
                     .setUri(uriBuilder.toString())
@@ -59,7 +64,7 @@ public class AddConversationMemberMethod extends AbstractMethod<InAppConversatio
                     .setEntity(new StringEntity(request.toJson()));
         }
 
-        return RequestBuilder.post(this.uri);
+        return RequestBuilder.post(uriBuilder.toString());
     }
 
     @Override
@@ -69,8 +74,19 @@ public class AddConversationMemberMethod extends AbstractMethod<InAppConversatio
 
     @Override
     public InAppConversationMemberEvent parseResponse(HttpResponse response) throws IOException {
-        String json = new BasicResponseHandler().handleResponse(response);
-        return InAppConversationMemberEvent.fromJson(json);
+        String json;
+        final StatusLine statusLine = response.getStatusLine();
+        try {
+            json = new BasicResponseHandler().handleResponse(response);
+        } catch (HttpResponseException e) {
+            json = "{}";
+            LOG.error("Application Conversation Member add response: " + response.toString(), e);
+        }
+        InAppConversationMemberEvent conversationMemberEvent = InAppConversationMemberEvent.fromJson(json);
+        conversationMemberEvent.setStatusCode(statusLine.getStatusCode());
+        conversationMemberEvent.setReasonPhrase(statusLine.getReasonPhrase());
+        conversationMemberEvent.setConversationId(this.conversationId);
+        return conversationMemberEvent;
     }
 
     public void setUri(String uri) {

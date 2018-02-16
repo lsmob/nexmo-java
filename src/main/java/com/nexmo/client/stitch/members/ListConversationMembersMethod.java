@@ -1,16 +1,23 @@
 package com.nexmo.client.stitch.members;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.nexmo.client.HttpWrapper;
 import com.nexmo.client.NexmoClientException;
 import com.nexmo.client.NexmoMethodFailedException;
 import com.nexmo.client.NexmoUnexpectedException;
 import com.nexmo.client.auth.JWTAuthMethod;
+import com.nexmo.client.stitch.Constants;
+import com.nexmo.client.stitch.EmbeddedInAppConversationMembers;
+import com.nexmo.client.stitch.InAppConversationMember;
 import com.nexmo.client.stitch.InAppConversationMembersPage;
 import com.nexmo.client.voice.endpoints.AbstractMethod;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.http.HttpResponse;
+import org.apache.http.StatusLine;
+import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.methods.RequestBuilder;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.impl.client.BasicResponseHandler;
@@ -44,24 +51,50 @@ public class ListConversationMembersMethod extends AbstractMethod<String, InAppC
     public RequestBuilder makeRequest(String conversationId) throws NexmoClientException, UnsupportedEncodingException {
         this.conversationId = conversationId;
         URIBuilder uriBuilder;
-        try {
-            uriBuilder = new URIBuilder(this.uri);
-        } catch (URISyntaxException e) {
-            throw new NexmoUnexpectedException("Could not parse URI: " + this.uri);
-        }
+        String finalUri = uri;
         if (conversationId != null) {
-            uriBuilder.setParameter("id", conversationId);
+            finalUri = finalUri.replace(":id", conversationId);
         } else {
             throw new NexmoMethodFailedException("Not allowed request. Conversation ID is required!");
         }
+        try {
+            uriBuilder = new URIBuilder(finalUri);
+        } catch (URISyntaxException e) {
+            throw new NexmoUnexpectedException("Could not parse URI: " + this.uri);
+        }
+
+        LOG.debug("Application Conversation Members URL: " + uriBuilder.toString() );
+
         return RequestBuilder.get().setUri(uriBuilder.toString());
     }
 
     @Override
     public InAppConversationMembersPage parseResponse(HttpResponse response) throws IOException {
-        String json = new BasicResponseHandler().handleResponse(response);
-        InAppConversationMembersPage conversationMembersPage = InAppConversationMembersPage.fromJson(json);
+        String json;
+        InAppConversationMembersPage conversationMembersPage;
+        final StatusLine statusLine = response.getStatusLine();
+        try {
+            json = new BasicResponseHandler().handleResponse(response);
+        } catch (HttpResponseException e) {
+            json = "{}";
+            LOG.error("Application Conversation Members response: " + response.toString(), e);
+        }
+
+        LOG.debug("Application Conversation Members JSON: " + json );
+
+        if (Constants.enableConversationMemberssListPagination) {
+            conversationMembersPage = InAppConversationMembersPage.fromJson(json);
+        } else {
+            ObjectMapper mapper = new ObjectMapper();
+            mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+            EmbeddedInAppConversationMembers embeddedInAppConversationMembers = new EmbeddedInAppConversationMembers();
+            embeddedInAppConversationMembers.setInAppConversationMembers(mapper.readValue(json, InAppConversationMember[].class));
+            conversationMembersPage = new InAppConversationMembersPage();
+            conversationMembersPage.setEmbedded(embeddedInAppConversationMembers);
+        }
         conversationMembersPage.setConversationId(this.conversationId);
+        conversationMembersPage.setStatusCode(statusLine.getStatusCode());
+        conversationMembersPage.setReasonPhrase(statusLine.getReasonPhrase());
         return conversationMembersPage;
     }
 

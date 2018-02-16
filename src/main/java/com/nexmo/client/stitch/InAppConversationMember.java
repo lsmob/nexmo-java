@@ -37,7 +37,7 @@ public class InAppConversationMember {
                 .append("User-ID: ").append(this.getUserId()).append(", ")
                 .append("State: ").append(this.getState()).append(", ")
                 .append("Channel: ").append(this.getChannel()).append(", ")
-                .append("href: ").append(this.getHRef())
+                .append("href: ").append(this.getHref())
                 .append(">")
                 .toString();
     }
@@ -72,6 +72,7 @@ public class InAppConversationMember {
         return userName;
     }
 
+    @JsonProperty("user_name")
     public void setUserName(String userName) {
         this.userName = userName;
     }
@@ -81,6 +82,7 @@ public class InAppConversationMember {
         return userId;
     }
 
+    @JsonProperty("user_id")
     public void setUserId(String userId) {
         this.userId = userId;
     }
@@ -90,11 +92,10 @@ public class InAppConversationMember {
         return state;
     }
 
-    public void setChannel(InAppConversationMemberState state) {
+    public void setState(InAppConversationMemberState state) {
         this.state = state;
     }
 
-    @JsonProperty("channel")
     public ChannelData getChannel() {
         return channel;
     }
@@ -103,12 +104,11 @@ public class InAppConversationMember {
         this.channel = channel;
     }
 
-    @JsonProperty("href")
-    public String getHRef() {
+    public String getHref() {
         return href;
     }
 
-    public void setHRef(String href) {
+    public void setHref(String href) {
         this.href = href;
     }
 }
