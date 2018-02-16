@@ -30,6 +30,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.util.ArrayIterator;
 import com.nexmo.client.NexmoUnexpectedException;
 import com.nexmo.client.legacyutils.PageLinks;
+import com.nexmo.client.stitch.members.EmbeddedInAppConversationMembers;
 
 import java.io.IOException;
 import java.util.Iterator;

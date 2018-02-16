@@ -20,26 +20,27 @@
  * THE SOFTWARE.
  */
 
-package com.nexmo.client.stitch;
+package com.nexmo.client.stitch.users;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.nexmo.client.stitch.InAppUserInfo;
 
 /**
  * Created by Ergyun Syuleyman on 2/14/18.
  */
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class EmbeddedInAppConversations {
-    private InAppConversationInfo[] conversationInfos;
+public class EmbeddedInAppUsers {
+    private InAppUserInfo[] userInfos;
 
-    @JsonProperty("conversations")
-    private void setInAppConversationInfos(InAppConversationInfo[] conversationInfos) {
-        this.conversationInfos = conversationInfos;
+    @JsonProperty("users")
+    protected void setInAppUserInfos(InAppUserInfo[] userInfos) {
+        this.userInfos = userInfos;
     }
 
-    @JsonProperty("conversations")
-    public InAppConversationInfo[] getInAppConversationInfos() {
-        return conversationInfos;
+    @JsonProperty("users")
+    public InAppUserInfo[] getInAppUserInfos() {
+        return userInfos;
     }
 }

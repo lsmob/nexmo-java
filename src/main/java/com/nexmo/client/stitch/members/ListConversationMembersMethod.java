@@ -30,7 +30,6 @@ import com.nexmo.client.NexmoMethodFailedException;
 import com.nexmo.client.NexmoUnexpectedException;
 import com.nexmo.client.auth.JWTAuthMethod;
 import com.nexmo.client.stitch.Constants;
-import com.nexmo.client.stitch.EmbeddedInAppConversationMembers;
 import com.nexmo.client.stitch.InAppConversationMember;
 import com.nexmo.client.stitch.InAppConversationMembersPage;
 import com.nexmo.client.voice.endpoints.AbstractMethod;

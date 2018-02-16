@@ -29,7 +29,6 @@ import com.nexmo.client.NexmoClientException;
 import com.nexmo.client.NexmoUnexpectedException;
 import com.nexmo.client.auth.JWTAuthMethod;
 import com.nexmo.client.stitch.Constants;
-import com.nexmo.client.stitch.EmbeddedInAppUsers;
 import com.nexmo.client.stitch.InAppUserInfo;
 import com.nexmo.client.stitch.InAppUserInfoPage;
 import com.nexmo.client.stitch.InAppUsersFilter;
