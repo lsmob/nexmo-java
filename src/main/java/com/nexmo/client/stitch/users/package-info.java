@@ -21,6 +21,6 @@
  */
 
 /**
- * Provides internal classes and interfaces implementing the Nexmo In-App Messaging API.
+ * Provides internal user classes and interfaces implementing the Nexmo In-App Messaging API.
  */
 package com.nexmo.client.stitch.users;

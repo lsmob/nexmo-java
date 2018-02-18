@@ -91,7 +91,7 @@ public class InAppMessagingClient extends AbstractClient {
      * @throws NexmoClientException if there was a problem with the Nexmo request or response objects.
      */
     public InAppConversationInfoPage listConversations(InAppConversationsFilter filter) throws IOException, NexmoClientException {
-        return conversations.get(filter);
+        return conversations.list(filter);
     }
 
     /**

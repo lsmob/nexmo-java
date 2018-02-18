@@ -1,4 +1,4 @@
-/*
+package com.nexmo.client.stitch.commons;/*
  * Copyright (c) 2018 SoftAvail Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -20,7 +20,26 @@
  * THE SOFTWARE.
  */
 
+import org.junit.Before;
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+
 /**
- * Provides internal conversation member classes and interfaces implementing the Nexmo In-App Messaging API.
+ * Created by Ergyun Syuleyman on 2/17/18.
  */
-package com.nexmo.client.stitch.members;
+public class ChannelDataTest {
+    ChannelData channelData;
+    @Before
+    public void setUp() throws Exception {
+        channelData = new ChannelData("app");
+    }
+
+    @Test
+    public void testType() throws Exception {
+        ChannelData data = new ChannelData();
+        data.setType("app");
+        assertEquals(data.getType(), channelData.getType());
+    }
+
+}

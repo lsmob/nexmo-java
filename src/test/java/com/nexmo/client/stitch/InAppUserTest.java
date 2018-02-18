@@ -1,4 +1,4 @@
-/*
+package com.nexmo.client.stitch;/*
  * Copyright (c) 2018 SoftAvail Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -20,7 +20,37 @@
  * THE SOFTWARE.
  */
 
+import com.nexmo.client.NexmoUnexpectedException;
+
+import org.junit.Before;
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 /**
- * Provides internal conversation member classes and interfaces implementing the Nexmo In-App Messaging API.
+ * Created by Ergyun Syuleyman on 2/18/18.
  */
-package com.nexmo.client.stitch.members;
+public class InAppUserTest {
+    @Before
+    public void setUp() throws Exception {
+    }
+
+    @Test
+    public void testInAppUser() throws Exception {
+        InAppUser user = new InAppUser("User Display Name");
+        String json = user.toJson();
+        InAppUser jsonUser = InAppUser.fromJson(json);
+        assertEquals(jsonUser.getName(), user.getName());
+
+        InAppUser jsonFailedUser = InAppUser.fromJson("{}");
+        assertTrue(jsonFailedUser.getName()==null);
+        try {
+            InAppUser.fromJson("[]");
+            assertTrue(false);
+        } catch (NexmoUnexpectedException ex) {
+            assertTrue(true);
+        }
+    }
+
+}

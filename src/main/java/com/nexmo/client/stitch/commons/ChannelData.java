@@ -20,7 +20,31 @@
  * THE SOFTWARE.
  */
 
+package com.nexmo.client.stitch.commons;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 /**
- * Provides internal conversation member classes and interfaces implementing the Nexmo In-App Messaging API.
+ * @author Created by Ergyun Syuleyman on 2/15/18.
  */
-package com.nexmo.client.stitch.members;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class ChannelData {
+    /* Channel type */
+    private String type;
+
+    public ChannelData() {
+    }
+
+    public ChannelData(String type) {
+        this.type = type;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+}

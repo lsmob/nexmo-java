@@ -27,7 +27,7 @@ import com.nexmo.client.NexmoClientException;
 import com.nexmo.client.auth.JWTAuthMethod;
 import com.nexmo.client.stitch.InAppConversation;
 import com.nexmo.client.stitch.InAppConversationEvent;
-import com.nexmo.client.voice.endpoints.AbstractMethod;
+import com.nexmo.client.stitch.commons.AbstractMessagingMethod;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -45,7 +45,7 @@ import java.io.UnsupportedEncodingException;
  * Created by Ergyun Syuleyman on 2/13/18.
  */
 
-public class CreateConversationMethod extends AbstractMethod<InAppConversation, InAppConversationEvent> {
+public class CreateConversationMethod extends AbstractMessagingMethod<InAppConversation, InAppConversationEvent> {
     private static final Log LOG = LogFactory.getLog(CreateConversationMethod.class);
 
     private static final String DEFAULT_URI = "https://api.nexmo.com/beta/conversations";

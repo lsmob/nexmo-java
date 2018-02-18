@@ -20,7 +20,16 @@
  * THE SOFTWARE.
  */
 
+package com.nexmo.client.stitch.commons;
+
 /**
- * Provides internal conversation member classes and interfaces implementing the Nexmo In-App Messaging API.
+ * Created by Ergyun Syuleyman on 2/16/18.
  */
-package com.nexmo.client.stitch.members;
+
+public class Constants {
+
+    public static final boolean enableConversationsListPagination = true;
+    public static final boolean enableUsersListPagination = false;
+    public static final boolean enableConversationMemberssListPagination = false;
+
+}

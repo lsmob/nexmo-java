@@ -23,9 +23,11 @@
 package com.nexmo.client.stitch.conversations;
 
 import com.nexmo.client.HttpWrapper;
+import com.nexmo.client.NexmoClientException;
+import com.nexmo.client.NexmoMethodFailedException;
 import com.nexmo.client.auth.JWTAuthMethod;
 import com.nexmo.client.stitch.InAppConversationInfo;
-import com.nexmo.client.voice.endpoints.AbstractMethod;
+import com.nexmo.client.stitch.commons.AbstractMessagingMethod;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -41,7 +43,7 @@ import java.io.IOException;
  * Created by Ergyun Syuleyman on 2/13/18.
  */
 
-public class ReadConversationMethod extends AbstractMethod<String, InAppConversationInfo> {
+public class ReadConversationMethod extends AbstractMessagingMethod<String, InAppConversationInfo> {
     private static final Log LOG = LogFactory.getLog(ReadConversationMethod.class);
 
     private static final String DEFAULT_BASE_URI = "https://api.nexmo.com/beta/conversations/";
@@ -58,9 +60,13 @@ public class ReadConversationMethod extends AbstractMethod<String, InAppConversa
     }
 
     @Override
-    public RequestBuilder makeRequest(String conversationId) {
-        String uri = this.baseUri + conversationId;
-        return RequestBuilder.get(uri);
+    public RequestBuilder makeRequest(String conversationId) throws NexmoClientException {
+        if (conversationId != null && !conversationId.isEmpty()) {
+            String uri = this.baseUri + conversationId;
+            return RequestBuilder.get(uri);
+        } else {
+            throw new NexmoMethodFailedException("Bad request. Conversation ID is required!");
+        }
     }
 
     @Override

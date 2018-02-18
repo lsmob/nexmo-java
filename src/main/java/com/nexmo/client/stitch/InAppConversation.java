@@ -83,10 +83,10 @@ public class InAppConversation {
         }
     }
 
-    public static InAppUser fromJson(String json) {
+    public static InAppConversation fromJson(String json) {
         try {
             ObjectMapper mapper = new ObjectMapper();
-            return mapper.readValue(json, InAppUser.class);
+            return mapper.readValue(json, InAppConversation.class);
         } catch (IOException jpe) {
             throw new NexmoUnexpectedException("Failed to produce InAppConversation object from json.", jpe);
         }

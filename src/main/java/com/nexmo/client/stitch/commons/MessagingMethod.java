@@ -20,16 +20,16 @@
  * THE SOFTWARE.
  */
 
-package com.nexmo.client.stitch;
+package com.nexmo.client.stitch.commons;
+
+import com.nexmo.client.NexmoClientException;
+
+import java.io.IOException;
 
 /**
- * Created by Ergyun Syuleyman on 2/16/18.
+ * Created by Ergyun Syuleyman on 2/17/18.
  */
 
-public class Constants {
-
-    public static final boolean enableConversationsListPagination = true;
-    public static final boolean enableUsersListPagination = false;
-    public static final boolean enableConversationMemberssListPagination = false;
-
+public interface MessagingMethod<RequestT, ResultT> {
+    public ResultT execute(RequestT request) throws IOException, NexmoClientException;
 }

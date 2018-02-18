@@ -28,11 +28,11 @@ import com.nexmo.client.HttpWrapper;
 import com.nexmo.client.NexmoClientException;
 import com.nexmo.client.NexmoUnexpectedException;
 import com.nexmo.client.auth.JWTAuthMethod;
-import com.nexmo.client.stitch.Constants;
 import com.nexmo.client.stitch.InAppUserInfo;
 import com.nexmo.client.stitch.InAppUserInfoPage;
 import com.nexmo.client.stitch.InAppUsersFilter;
-import com.nexmo.client.voice.endpoints.AbstractMethod;
+import com.nexmo.client.stitch.commons.AbstractMessagingMethod;
+import com.nexmo.client.stitch.commons.Constants;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -50,10 +50,10 @@ import java.net.URISyntaxException;
 import java.util.List;
 
 /**
- * Created by @authorErgyun Syuleyman on 2/13/18.
+ * Created by Ergyun Syuleyman on 2/13/18.
  */
 
-public class ListUsersMethod extends AbstractMethod<InAppUsersFilter, InAppUserInfoPage> {
+public class ListUsersMethod extends AbstractMessagingMethod<InAppUsersFilter, InAppUserInfoPage> {
     private static final Log LOG = LogFactory.getLog(ListUsersMethod.class);
 
     private static final String DEFAULT_URI = "https://api.nexmo.com/beta/users";
@@ -94,7 +94,11 @@ public class ListUsersMethod extends AbstractMethod<InAppUsersFilter, InAppUserI
         try {
             json = new BasicResponseHandler().handleResponse(response);
         } catch (HttpResponseException e) {
-            json = "{}";
+            if (Constants.enableUsersListPagination) {
+                json = "{}";
+            } else {
+                json = "[]";
+            }
             LOG.error("Application Users response: " + response.toString(), e);
         }
 

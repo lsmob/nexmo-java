@@ -20,24 +20,7 @@
  * THE SOFTWARE.
  */
 
-package com.nexmo.client.stitch;
-
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 /**
- * Created by Ergyun Syuleyman on 2/15/18.
+ * Provides common internal implementations of the Nexmo In-App Messaging API.
  */
-
-@JsonIgnoreProperties(ignoreUnknown = true)
-public class ChannelData {
-    /* Channel type */
-    private String type;
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-}
+package com.nexmo.client.stitch.commons;

@@ -28,6 +28,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nexmo.client.NexmoUnexpectedException;
+import com.nexmo.client.stitch.commons.ChannelData;
 
 import java.io.IOException;
 
@@ -45,6 +46,9 @@ public class InAppConversationMemberRequest {
     private InAppConversationMemberAction action;
     /* The member channel */
     private ChannelData channel;
+
+    public InAppConversationMemberRequest() {
+    }
 
     public InAppConversationMemberRequest(String userId,
                                           InAppConversationMemberAction action,

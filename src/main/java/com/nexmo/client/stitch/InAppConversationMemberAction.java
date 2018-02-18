@@ -40,7 +40,7 @@ public enum InAppConversationMemberAction {
     }
 
     @JsonCreator
-    public static InAppConversationMemberState fromString(String name) {
-        return InAppConversationMemberState.valueOf(name.toUpperCase());
+    public static InAppConversationMemberAction fromString(String name) {
+        return InAppConversationMemberAction.valueOf(name.toUpperCase());
     }
 }

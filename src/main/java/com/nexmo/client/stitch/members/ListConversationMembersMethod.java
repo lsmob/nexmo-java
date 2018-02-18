@@ -29,10 +29,10 @@ import com.nexmo.client.NexmoClientException;
 import com.nexmo.client.NexmoMethodFailedException;
 import com.nexmo.client.NexmoUnexpectedException;
 import com.nexmo.client.auth.JWTAuthMethod;
-import com.nexmo.client.stitch.Constants;
 import com.nexmo.client.stitch.InAppConversationMember;
 import com.nexmo.client.stitch.InAppConversationMembersPage;
-import com.nexmo.client.voice.endpoints.AbstractMethod;
+import com.nexmo.client.stitch.commons.AbstractMessagingMethod;
+import com.nexmo.client.stitch.commons.Constants;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -51,7 +51,7 @@ import java.net.URISyntaxException;
  * Created by Ergyun Syuleyman on 2/15/18.
  */
 
-public class ListConversationMembersMethod extends AbstractMethod<String, InAppConversationMembersPage> {
+public class ListConversationMembersMethod extends AbstractMessagingMethod<String, InAppConversationMembersPage> {
     private static final Log LOG = LogFactory.getLog(ListConversationMembersMethod.class);
 
     private static final String DEFAULT_URI = "https://api.nexmo.com/beta/conversations/:id/members";
@@ -76,7 +76,7 @@ public class ListConversationMembersMethod extends AbstractMethod<String, InAppC
         if (conversationId != null) {
             finalUri = finalUri.replace(":id", conversationId);
         } else {
-            throw new NexmoMethodFailedException("Not allowed request. Conversation ID is required!");
+            throw new NexmoMethodFailedException("Bad request. Conversation ID is required!");
         }
         try {
             uriBuilder = new URIBuilder(finalUri);
@@ -97,7 +97,11 @@ public class ListConversationMembersMethod extends AbstractMethod<String, InAppC
         try {
             json = new BasicResponseHandler().handleResponse(response);
         } catch (HttpResponseException e) {
-            json = "{}";
+            if (Constants.enableConversationMemberssListPagination) {
+                json = "{}";
+            } else {
+                json = "[]";
+            }
             LOG.error("Application Conversation Members response: " + response.toString(), e);
         }
 
@@ -125,5 +129,13 @@ public class ListConversationMembersMethod extends AbstractMethod<String, InAppC
 
     public String getUri() {
         return this.uri;
+    }
+
+    public void setConversationId(String conversationId) {
+        this.conversationId = conversationId;
+    }
+
+    public String getConversationId() {
+        return this.conversationId;
     }
 }

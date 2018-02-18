@@ -79,7 +79,7 @@ public class InAppConversations {
      * @throws IOException          if an error occurs communicating with the Nexmo API
      * @throws NexmoClientException if an error occurs constructing the Nexmo API request or response
      */
-    public InAppConversationInfoPage get(InAppConversationsFilter filter) throws IOException, NexmoClientException {
+    public InAppConversationInfoPage list(InAppConversationsFilter filter) throws IOException, NexmoClientException {
         return this.listConversations.execute(filter);
     }
 

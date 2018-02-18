@@ -29,7 +29,7 @@ import com.nexmo.client.NexmoUnexpectedException;
 import com.nexmo.client.auth.JWTAuthMethod;
 import com.nexmo.client.stitch.InAppConversationMemberEvent;
 import com.nexmo.client.stitch.InAppConversationMemberRequest;
-import com.nexmo.client.voice.endpoints.AbstractMethod;
+import com.nexmo.client.stitch.commons.AbstractMessagingMethod;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -49,7 +49,7 @@ import java.net.URISyntaxException;
  * Created by Ergyun Syuleyman on 2/15/18.
  */
 
-public class AddConversationMemberMethod extends AbstractMethod<InAppConversationMemberRequest, InAppConversationMemberEvent> {
+public class AddConversationMemberMethod extends AbstractMessagingMethod<InAppConversationMemberRequest, InAppConversationMemberEvent> {
     private static final Log LOG = LogFactory.getLog(AddConversationMemberMethod.class);
 
     private static final String DEFAULT_URI = "https://api.nexmo.com/beta/conversations/:id/members";
@@ -63,30 +63,30 @@ public class AddConversationMemberMethod extends AbstractMethod<InAppConversatio
 
     @Override
     public RequestBuilder makeRequest(InAppConversationMemberRequest request) throws NexmoClientException, UnsupportedEncodingException {
-        this.conversationId = request.getConversationId();
-        URIBuilder uriBuilder;
-        String finalUri = uri;
-        if (conversationId != null) {
-            finalUri = finalUri.replace(":id", conversationId);
-        } else {
-            throw new NexmoMethodFailedException("Not allowed request. Conversation ID is required!");
-        }
-        try {
-            uriBuilder = new URIBuilder(finalUri);
-        } catch (URISyntaxException e) {
-            throw new NexmoUnexpectedException("Could not parse URI: " + this.uri);
-        }
-
-        LOG.debug("Application Conversation Members URL: " + uriBuilder.toString());
-
         if (request != null) {
+            this.conversationId = request.getConversationId();
+            URIBuilder uriBuilder;
+            String finalUri = uri;
+            if (conversationId != null) {
+                finalUri = finalUri.replace(":id", conversationId);
+            } else {
+                throw new NexmoMethodFailedException("Bad request. Conversation ID is required!");
+            }
+            try {
+                uriBuilder = new URIBuilder(finalUri);
+            } catch (URISyntaxException e) {
+                throw new NexmoUnexpectedException("Could not parse URI: " + this.uri);
+            }
+
+            LOG.debug("Application Conversation Members URL: " + uriBuilder.toString());
+
             return RequestBuilder.post()
                     .setUri(uriBuilder.toString())
                     .setHeader("Content-Type", "application/json")
                     .setEntity(new StringEntity(request.toJson()));
         }
 
-        return RequestBuilder.post(uriBuilder.toString());
+        throw new NexmoMethodFailedException("Bad request. Request must not be NULL!");
     }
 
     @Override
@@ -113,5 +113,9 @@ public class AddConversationMemberMethod extends AbstractMethod<InAppConversatio
 
     public void setUri(String uri) {
         this.uri = uri;
+    }
+
+    public void setConversationId(String conversationId) {
+        this.conversationId = conversationId;
     }
 }

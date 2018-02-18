@@ -26,10 +26,10 @@ import com.nexmo.client.HttpWrapper;
 import com.nexmo.client.NexmoClientException;
 import com.nexmo.client.NexmoUnexpectedException;
 import com.nexmo.client.auth.JWTAuthMethod;
-import com.nexmo.client.stitch.Constants;
 import com.nexmo.client.stitch.InAppConversationInfoPage;
 import com.nexmo.client.stitch.InAppConversationsFilter;
-import com.nexmo.client.voice.endpoints.AbstractMethod;
+import com.nexmo.client.stitch.commons.AbstractMessagingMethod;
+import com.nexmo.client.stitch.commons.Constants;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -50,7 +50,7 @@ import java.util.List;
  * Created by Ergyun Syuleyman on 2/13/18.
  */
 
-public class ListConversationsMethod extends AbstractMethod<InAppConversationsFilter, InAppConversationInfoPage> {
+public class ListConversationsMethod extends AbstractMessagingMethod<InAppConversationsFilter, InAppConversationInfoPage> {
     private static final Log LOG = LogFactory.getLog(ListConversationsMethod.class);
 
     private static final String DEFAULT_URI = "https://api.nexmo.com/beta/conversations";
@@ -96,6 +96,7 @@ public class ListConversationsMethod extends AbstractMethod<InAppConversationsFi
         }
 
         LOG.debug("Application Conversations JSON: " + json );
+        System.out.println("############## Conversation json: " + json);
 
         if (Constants.enableConversationsListPagination) {
             conversationInfoPage = InAppConversationInfoPage.fromJson(json);
