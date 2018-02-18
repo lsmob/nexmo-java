@@ -1,4 +1,4 @@
-package com.nexmo.client.stitch.members;/*
+/*
  * Copyright (c) 2018 SoftAvail Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -19,6 +19,8 @@ package com.nexmo.client.stitch.members;/*
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
+package com.nexmo.client.stitch.members;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;

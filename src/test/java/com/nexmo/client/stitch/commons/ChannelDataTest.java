@@ -1,4 +1,4 @@
-package com.nexmo.client.stitch.commons;/*
+/*
  * Copyright (c) 2018 SoftAvail Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -19,6 +19,8 @@ package com.nexmo.client.stitch.commons;/*
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
+package com.nexmo.client.stitch.commons;
 
 import org.junit.Before;
 import org.junit.Test;
